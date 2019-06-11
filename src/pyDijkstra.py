@@ -28,14 +28,22 @@ class Grafo:
 		self.vertices = [gera_vertice(*vertice) for vertice in vertices]
 
 
+numVertices = 5
+destinoVertices = [2,4,5]
+pesosVertices = [1,1,100,2,2]
+matrizArestas = [[-1, 2, 1, 3, -1], [2, -1, 3, -1, -1], [1, 3, -1, 1, 2], [3, -1, 1, -1, 4], [-1, -1, 2, 4, -1]]
+
+print(matrizArestas)
+
 
 ###USER INPUT###
+'''
 numVertices = int(input('quantas vertices?: '))
 destinoVertices = input('quais os destinos? (separados por espaco)\n ').split(' ')
 pesosVertices = list(map(int, input('quais os pesos das vertices? (separados por espaco e ordenados)\n').split(' ')))
 matrizArestas = [] #define futura lista de listas que sera inserida pelo usuario para informar pesos das arestas que saem de cada vertice
 for i in range(numVertices):
 	matrizArestas.append(list(map(int, input('Peso das arestas que saem do vertice {}? (-1 indica a ausencia da aresta)\n'.format(i+1)).split(' '))))
+'''
 
-print('pipipipopopo\n\n\n\n',matrizArestas)
 
