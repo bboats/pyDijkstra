@@ -1,2 +1,3 @@
 # pyDijkstra
-Dijkstra algorithm implemented in python, final assignment for graphs class
+## Trabalho final da cadeira de grafos
+Algoritmo de Dijkstra implementado em python.
