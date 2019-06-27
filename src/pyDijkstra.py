@@ -31,6 +31,9 @@ class Grafo:
 	def __init__(self, arestas, vertices):
 		self.arestas = self.matrizArestas_to_dictArestas(arestas)
 		self.vertices = {vertice+1:peso for vertice,peso in enumerate(vertices)} #gera o dicionario de peso dos vertices
+		self.grafo = [[-1 for column in range(len(vertices))] for row in range(len(vertices))] #matriz de adj do grafo final
+		self.grafoInclui = [] #lista de vertices já inclusos no grafo final
+		self.pesosMinimos = [-1 for i in vertices]
 
 
 	def matrizArestas_to_dictArestas(self, arestas):
@@ -65,6 +68,14 @@ class Grafo:
 		self.arestas[inicio].pop(destino)
 		self.arestas[destino].pop(inicio)
 
+	def menor_distancia(self):
+		'''determina qual o nodo que possui o menor custo para adicionar no grafo final'''
+		decisao = "trocar pelo numero do vertice de menor distancia"
+		print (self.arestas) # isso diz os pesos das arestas conectadas a cada vertice do grafo original
+		print (self.grafoInclui) #isso vai dizer quais estao e n estao no grafo
+		print (decisao)
+		#DO THIS#
+
 
 numVertices = 5 ##iteração ao gerar a matriz
 destinoVertices = [2,4,5] ##utilizado para output
@@ -81,6 +92,8 @@ matrizArestas = [[-1, 2, 1, 3, -1],
 
 
 teste = Grafo(matrizArestas,pesosVertices)
+teste.menor_distancia()
+print(teste.pesosMinimos)
 
 ###USER INPUT###
 #will be part of the code but sublime text is a pain to work with user input so for now we will use already defined variables instead#
