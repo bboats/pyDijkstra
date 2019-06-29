@@ -1,6 +1,4 @@
 #!python3
-from collections import namedtuple,deque
-
 ###########TO DO##############
 #encontrar vizinhos (como usamos dicionário é possivel fazer isso com uma função de if a in b) [X]
 #métodos para adicionar e remover arestas/vertices (dentro da clase Grafo) -- [...X?]  
@@ -12,15 +10,8 @@ from collections import namedtuple,deque
 #valor infinito para utilizarmos posteriormente no algoritmo
 infinito = float('inf')
 
-#gera uma tupla nomeada para as arestas com a intencao de facilitar a compreensao do programa
-Aresta = namedtuple('Aresta','inicio, fim, peso')
-def gera_aresta(inicio,fim,peso):
-	return Aresta(inicio,fim,peso)
-
-#gera uma tupla nomeada para os nodos com a intencao de facilitar a compreensao do programa
-Vertice = namedtuple('Vertice','nome, peso')
-def gera_vertice(nome,peso):
-	return Vertice(nome,peso)
+if 1 < infinito:
+	print('oi')
 
 #classe de grafo, inicialmente no arquivo principal para facilitar testes
 ####!!!! transferir para classes.py ao concluir o dev do programa !!!!####
@@ -32,8 +23,9 @@ class Grafo:
 		self.arestas = self.matrizArestas_to_dictArestas(arestas)
 		self.vertices = {vertice+1:peso for vertice,peso in enumerate(vertices)} #gera o dicionario de peso dos vertices
 		self.grafo = [[-1 for column in range(len(vertices))] for row in range(len(vertices))] #matriz de adj do grafo final
-		self.grafoInclui = [] #lista de vertices já inclusos no grafo final
+		self.grafoInclui = [1] #lista de vertices já inclusos no grafo final
 		self.pesosMinimos = [-1 for i in vertices]
+		self.pesosMinimos[0] = self.vertices[1]
 
 
 	def matrizArestas_to_dictArestas(self, arestas):
@@ -48,37 +40,24 @@ class Grafo:
 						dictArestas[origem+1] = {destino+1 : peso}
 		return dictArestas
 
-	def adiciona_aresta(self, inicio, fim, peso):
-		#insere em arestas[inicio][destino] (e garante que não ocorrerão key errors)
-		if inicio in self.arestas:
-			self.arestas[inicio][destino] = peso
-		else:
-			self.arestas[inicio] = {destino:peso}
-
-		#idem porém em arestas[destino][inicio] (as arestas são bidirecionais)
-		if destino in self.arestas:
-			self.arestas[destino][inicio] = peso
-		else:
-			self.arestas[destino] = {inicio:peso}
-
-
-
-	def remove_aresta(self, inicio, destino):
-		'''remove uma aresta de um dicionario dando seu inicio e destino, esta aresta precisa estar presente'''
-		self.arestas[inicio].pop(destino)
-		self.arestas[destino].pop(inicio)
-
 	def menor_distancia(self):
-		'''determina qual o nodo que possui o menor custo para adicionar no grafo final'''
-		decisao = "trocar pelo numero do vertice de menor distancia"
-		print (self.arestas) # isso diz os pesos das arestas conectadas a cada vertice do grafo original
-		print (self.grafoInclui) #isso vai dizer quais estao e n estao no grafo
-		print (decisao)
-		#DO THIS#
+		'''determina qual o vertice que possui o menor custo para adicionar no grafo final'''
+		dist_total_escolhido = infinito #valor que grava qual a menor distancia ateh o momento
+		vert_escolhido = -1 #numero do vertice escolhido
+
+		for vertice_atual in self.grafoInclui:
+			for destino,peso in self.arestas[vertice_atual].items():
+				dist_total_atual = peso + self.pesosMinimos[vertice_atual-1] + self.vertices[destino]
+				if (dist_total_atual  < dist_total_escolhido) and (destino not in self.grafoInclui):
+					dist_total_escolhido = dist_total_atual
+					vert_escolhido = destino
+
+		self.pesosMinimos[vert_escolhido-1] = dist_total_escolhido
+		self.grafoInclui.append(vert_escolhido)
 
 
 numVertices = 5 ##iteração ao gerar a matriz
-destinoVertices = [2,4,5] ##utilizado para output
+destinoVertices = [1,2,3,4,5] ##utilizado para output
 ##utilizados na geração do grafo
 pesosVertices = [1,1,100,2,2] 
 matrizArestas = [[-1, 2, 1, 3, -1], 
@@ -92,8 +71,14 @@ matrizArestas = [[-1, 2, 1, 3, -1],
 
 
 teste = Grafo(matrizArestas,pesosVertices)
-teste.menor_distancia()
-print(teste.pesosMinimos)
+
+while -1 in teste.pesosMinimos:
+	teste.menor_distancia()
+	#print(teste.pesosMinimos)
+
+print("Dijkstra grafos em python")
+for vert in destinoVertices:
+	print ("Custo de 1 para {}: {}".format(vert,teste.pesosMinimos[vert-1]))
 
 ###USER INPUT###
 #will be part of the code but sublime text is a pain to work with user input so for now we will use already defined variables instead#
