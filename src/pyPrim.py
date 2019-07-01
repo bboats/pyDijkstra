@@ -1,17 +1,12 @@
 #!python3
-###########TO DO##############
-#encontrar vizinhos (como usamos dicionário é possivel fazer isso com uma função de if a in b) [X]
-#métodos para adicionar e remover arestas/vertices (dentro da clase Grafo) -- [...X?]  
-#fazer o tal do algoritmo pipipipopopo [ ]
-#############################
+#Trabalho final da cadeira de grafos
+#Implementacao do algoritmo de prim modificado para levar em conta as vertices possuirem peso proprio
+#Marcos Vinicius de Oliveira Pinto - 00288560
 
-
+import os
 
 #valor infinito para utilizarmos posteriormente no algoritmo
 infinito = float('inf')
-
-if 1 < infinito:
-	print('oi')
 
 #classe de grafo, inicialmente no arquivo principal para facilitar testes
 ####!!!! transferir para classes.py ao concluir o dev do programa !!!!####
@@ -41,7 +36,7 @@ class Grafo:
 		return dictArestas
 
 	def menor_distancia(self):
-		'''determina qual o vertice que possui o menor custo para adicionar no grafo final'''
+		'''determina qual o vertice que possui o menor custo para adicionar no grafo final e adiciona'''
 		dist_total_escolhido = infinito #valor que grava qual a menor distancia ateh o momento
 		vert_escolhido = -1 #numero do vertice escolhido
 
@@ -55,7 +50,7 @@ class Grafo:
 		self.pesosMinimos[vert_escolhido-1] = dist_total_escolhido
 		self.grafoInclui.append(vert_escolhido)
 
-
+'''
 numVertices = 5 ##iteração ao gerar a matriz
 destinoVertices = [1,2,3,4,5] ##utilizado para output
 ##utilizados na geração do grafo
@@ -65,30 +60,31 @@ matrizArestas = [[-1, 2, 1, 3, -1],
 				[1, 3, -1, 1, 2], 
 				[3, -1, 1, -1, 4], 
 				[-1, -1, 2, 4, -1]]
-
-
-
-
-
-teste = Grafo(matrizArestas,pesosVertices)
-
-while -1 in teste.pesosMinimos:
-	teste.menor_distancia()
-	#print(teste.pesosMinimos)
-
-print("Dijkstra grafos em python")
-for vert in destinoVertices:
-	print ("Custo de 1 para {}: {}".format(vert,teste.pesosMinimos[vert-1]))
-
-###USER INPUT###
-#will be part of the code but sublime text is a pain to work with user input so for now we will use already defined variables instead#
 '''
-numVertices = int(input('quantas vertices?: '))
-destinoVertices = input('quais os destinos? (separados por espaco)\n ').split(' ')
-pesosVertices = list(map(int, input('quais os pesos das vertices? (separados por espaco e ordenados)\n').split(' ')))
-matrizArestas = [] #define futura lista de listas que sera inserida pelo usuario para informar pesos das arestas que saem de cada vertice
-for i in range(numVertices):
-	matrizArestas.append(list(map(int, input('Peso das arestas que saem do vertice {}? (-1 indica a ausencia da aresta)\n'.format(i+1)).split(' '))))
-'''
+while 1:
+	numVertices = int(input('quantas vertices?: '))
+	destinoVertices = list(map(int, input('quais os destinos? (separados por espaco)\n').split(' ')))
+	pesosVertices = list(map(int, input('quais os pesos das vertices? (separados por espaco e ordenados)\n').split(' ')))
+	matrizArestas = [] #define futura lista de listas que sera inserida pelo usuario para informar pesos das arestas que saem de cada vertice
+	for i in range(numVertices):
+		matrizArestas.append(list(map(int, input('Peso das arestas que saem do vertice {}? (-1 indica a ausencia da aresta)\n'.format(i+1)).split(' '))))
 
+
+
+
+	teste = Grafo(matrizArestas,pesosVertices)
+
+
+	while -1 in teste.pesosMinimos:
+		teste.menor_distancia()
+		#print(teste.pesosMinimos)
+
+
+	for vert in destinoVertices:
+		#print ("Custo de 1 para {}: {}".format(vert,teste.pesosMinimos[vert-1])) #print verbose
+		print(teste.pesosMinimos[vert-1])
+
+
+	input('encerra')
+	os.system('cls')
 
